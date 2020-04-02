@@ -7,7 +7,7 @@ spherical_stats seeks to implement utilities for analyzing spherical data in Pyt
 ### So far Implemented are two probability distributions:
 Angular central gaussian distribution (ACG)
 
-Elliptically symmetrical gausian distribution (ESAG)
+Elliptically symmetrical angular gausian distribution (ESAG)
 
 Both can be accessed via a scipy.stats like API
 
