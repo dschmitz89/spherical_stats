@@ -18,7 +18,7 @@ import numpy as np
 esag_params = np.array([1,3,5,2,6])
 esag_known = ESAG(esag_params)
 samples = esag_known.rvs(500)
-esag_unknown = ESAG
+esag_unknown = ESAG()
 esag_unknown.fit(samples, verbose = True)
 ```
 
