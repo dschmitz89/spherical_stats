@@ -349,10 +349,10 @@ class ESAG(object):
         self.params = params
     
     def fit(self, vectors, optimizer='L-BFGS-B', \
-                          print_summary = False):
+		verbose=False):
         
-        self.params = fit(vectors, optimizer='L-BFGS-B', \
-                          print_summary = False)
+        self.params = fit(vectors, optimizer=optimizer, \
+                          print_summary = verbose)
     
     def pdf(self, vectors):
         
