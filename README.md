@@ -2,7 +2,7 @@
 Spherical statistics in Python
 
 ## Scope
-spherical_stats seeks to implement utilities for analyzing spherical data in Python. It is still under heavy development. 
+spherical_stats seeks to implement utilities for analyzing spherical data in Python. It is still under heavy development. For performance, the numba JIT compiler is used as backend.
 
 ### So far Implemented are two probability distributions:
 Angular central gaussian distribution (ACG)
@@ -23,7 +23,9 @@ esag_unknown.fit(samples, verbose = True)
 ```
 
 ### Coming up
+
 Documentation
+
 Plotting functionality based on matplotlib
 
 ## Installation
