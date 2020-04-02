@@ -8,11 +8,10 @@ setup(
     author='Daniel Schmitz',
     license='MIT',                        # Update the version number for new releases
     packages=['spherical_stats'],
-    #url='https://jugit.fz-juelich.de/da.schmitz/pyesag',
+    url='https://github.com/dschmitz89/spherical_stats',
     install_requires=[
         'numpy',
         'numba>0.44',
-        'scipy>0.11',
-	'matplotlib>2.0'
+        'scipy>0.11'
     ]              # The name of your scipt, and also the command you'll be using for calling it
 )
