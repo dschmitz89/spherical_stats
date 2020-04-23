@@ -139,9 +139,9 @@ class ACG(object):
         
         #if covariance matrix provided, check positive definitenes
         
-        if self.cov_matrix != None:
+        if self.cov_matrix is not None:
             
-            if np.all(np.linalg.eigvals(self.cov_matrixcov) > 0):
+            if np.all(np.linalg.eigvals(self.cov_matrix) > 0):
                 
                 pass
             
