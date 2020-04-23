@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'numpy',
         'numba>0.44',
-        'scipy>0.11'
+        'scipy>0.11',
+        'matplotlib'
     ]              # The name of your scipt, and also the command you'll be using for calling it
 )
