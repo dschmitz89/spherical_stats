@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import time
 #import utils
+NUMBA_DISABLE_JIT = 1
 
 def rvs(params, size):
     '''
@@ -237,111 +238,6 @@ def fit(vectors, optimizer='L-BFGS-B', print_summary = False):
         
         return optimized_params
 
-def plot(esag_params, n_grid = 50, plot_esag_density = True, 
-        const_face_area = True, samples = None, 
-        color_samples = False, show_axis = True):
-    '''
-    Function to plot ESAG on the sphere using matplotlib
-
-    Params:
-        esag_params (ndarray[5,]): ESAG params 
-        n_grid (int, optional, default=50): grid lines of the plotted sphere
-        plot_esag_density (bool, default = True): colorcode sphere with ESAG density
-        const_face_area (bool, Optional, default = True): sample surface so that
-        every face has the same area
-        samples (ndarray[n,3], Optional): samples to plot on sphere
-        color_samples (bool, Optional, default = False): color samples acc. to their ESAG density
-        show_axis (bool, optional, default = True): show axes
-    '''
-    #create sphere
-    
-    if const_face_area:
-
-        u = np.flip(np.arccos(np.linspace(-1,1,n_grid)))
-    
-    else:
-
-        u = np.linspace(0, np.pi, n_grid)
-    
-    v = np.linspace(0, 2 * np.pi, n_grid)
-
-    x = np.outer(np.sin(u), np.sin(v))
-    y = np.outer(np.sin(u), np.cos(v))
-    z = np.outer(np.cos(u), np.ones_like(v))
-
-    fig = plt.figure()
-    ax = plt.axes(projection='3d')
-
-    if show_axis is not True:
-
-        ax.axis('off')
-
-    else:
-
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
-              
-    if plot_esag_density:
-        
-        #calculate esag density for faces of sphere surface
-        #create vector with faces coordinates
-        
-        u_grid, v_grid = np.meshgrid(u, v)
-    
-        vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
-
-        vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid)
-        
-        #calculate esag density for the faces
-        
-        pdfs_faces = pdf(vertex_vecs.T,esag_params).reshape(n_grid,n_grid)
-        
-        #create colormap for the faces
-        
-        normed_facecolors = plt.Normalize(vmin=pdfs_faces.min(), vmax=pdfs_faces.max())
-        
-        facecolors = cm.viridis(normed_facecolors(pdfs_faces.T))
-        
-        ax.plot_surface(x, y, z, zorder=0, facecolors=facecolors, \
-                    rstride=1, cstride=1, antialiased=False, linewidth=0)
-        
-    else:
-        
-        ax.plot_surface(x, y, z, zorder=0, rstride=1, cstride=1, \
-                        antialiased=False, linewidth=0)
-    
-    #if additionally vector samples are provided, plot them
-
-    if samples is not None:
-        
-        #if required colorcode directions by their ESAG PDF
-
-        if color_samples:       
-    
-            samples_pdf = pdf(samples, esag_params)
-            
-            sample_colors_cb = plt.Normalize(vmin=samples_pdf.min(), vmax=samples_pdf.max())
-            
-            sample_colors = cm.viridis(sample_colors_cb(samples_pdf))
-        
-            ax.scatter(samples[:,0],samples[:,1],samples[:,2], c=sample_colors, s = 8, \
-                       zorder=1)
-        else:
-            
-            ax.scatter(samples[:,0],samples[:,1],samples[:,2], c='r', s = 8, \
-                       zorder=1)
-    
-    #set initial view to center of the distribution at principal axis
-    
-    mu = esag_params[:3]
-    mu = mu/np.linalg.norm(mu)
-    azim = np.rad2deg(np.arctan2(mu[1],mu[0]))
-    elev = np.rad2deg(np.arcsin(mu[2]))
-    ax.view_init(azim=azim, elev=elev)
-    
-    plt.show()
-    
 class ESAG(object):
     
     def __init__(self, params = None):
