@@ -5,13 +5,11 @@ Created on Thu Apr 23 20:58:05 2020
 
 @author: tyrion
 """
-import matplotlib.pyplot as plt
-from matplotlib import cm
 import numpy as np
 
-def plot_sphere(axis, n_grid, dist = None):
+def sphere(n_grid, dist = None):
     
-    u = np.linspace(0, np.pi, n_grid)
+    u = np.linspace(0, np.pi, int(0.5 * n_grid))
     
     v = np.linspace(0, 2 * np.pi, n_grid)
 
@@ -34,14 +32,35 @@ def plot_sphere(axis, n_grid, dist = None):
         
         #create colormap for the faces
         
-        normed_facecolors = plt.Normalize(vmin=pdfs_faces.min(), \
-                                          vmax=pdfs_faces.max())
+        #normed_facecolors = plt.Normalize(vmin=pdfs_faces.min(), \
+        #                                  vmax=pdfs_faces.max())
         
-        facecolors = cm.viridis(normed_facecolors(pdfs_faces.T))
+        #facecolors = cmap(normed_facecolors(pdfs_faces.T))
 
-        axis.plot_surface(x, y, z, zorder=0, facecolors=facecolors, \
-                        rstride=1, cstride=1, antialiased=False, linewidth=0)    
+        return x, y, z, pdfs_faces
+    
     else:
         
-        axis.plot_surface(x, y, z, zorder=0, color='b', \
-                        rstride=1, cstride=1, antialiased=False, linewidth=0)  
+        return x, y, z
+    
+def spherical_hist(vectors, n_grid = 100):
+    
+    #u = np.linspace(0, np.pi , n_grid, endpoint = True)
+    u = np.flip(np.arccos(np.linspace(-1,1,n_grid, endpoint = True)))
+    v = np.linspace(-np.pi, np.pi, n_grid, endpoint = True)
+    
+    phis = np.arctan2(vectors[:,1], vectors[:,0])
+    #print(np.rad2deg(phis))
+    thetas = np.arccos(vectors[:,2])
+    
+    hist,thetabins, phibins = np.histogram2d(thetas, phis, bins = [u,v])
+    
+    #u_surface = np.linspace(0, np.pi , n_grid -1, endpoint = True)
+    u_surface = np.flip(np.arccos(np.linspace(-1,1,n_grid -1, endpoint = True)))
+    v_surface = np.linspace(-np.pi, np.pi, n_grid -1, endpoint = True)
+    #print(u_centers)
+    x = np.outer(np.sin(u_surface), np.cos(v_surface))
+    y = np.outer(np.sin(u_surface), np.sin(v_surface))
+    z = np.outer(np.cos(u_surface), np.ones_like(v_surface))
+
+    return hist, x, y, z
