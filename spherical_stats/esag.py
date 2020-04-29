@@ -4,12 +4,7 @@ import numpy as np
 from scipy.optimize import minimize
 from numba import njit
 from math import erf, sqrt, exp
-from matplotlib import cm
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from time import time
-#import utils
-NUMBA_DISABLE_JIT = 1
 
 def rvs(params, size):
     '''
@@ -184,7 +179,7 @@ def _log_likelihood(params, samples):
 
     return - np.log(probabilities).sum()
     
-def fit(vectors, optimizer='L-BFGS-B', print_summary = False):
+def fit(vectors, print_summary = False):
     '''
     Fits ESAG distribution to a sample of vectors
 
@@ -206,7 +201,8 @@ def fit(vectors, optimizer='L-BFGS-B', print_summary = False):
 
         t0 = time()
 
-    mle_result = minimize(_log_likelihood,starting_guesses, args=(vectors), method=optimizer)
+    mle_result = minimize(_log_likelihood,starting_guesses, args=(vectors), \
+                          method='L-BFGS-B')
 
     if print_summary:
 
@@ -230,10 +226,6 @@ def fit(vectors, optimizer='L-BFGS-B', print_summary = False):
         print("Optimization iterations: {}".format(n_iterations))
         print("Elapsed fitting time: {:10.3f}".format(fit_time))
 
-    #if return_logp:
-            
-    #    return optimized_params, optimized_loglikelihood
-    
     else:
         
         return optimized_params
@@ -244,11 +236,9 @@ class ESAG(object):
         
         self.params = params
     
-    def fit(self, vectors, optimizer='L-BFGS-B', \
-		verbose=False):
+    def fit(self, vectors, verbose=False):
         
-        self.params = fit(vectors, optimizer=optimizer, \
-                          print_summary = verbose)
+        self.params = fit(vectors, print_summary = verbose)
     
     def pdf(self, vectors):
         
@@ -257,4 +247,3 @@ class ESAG(object):
     def rvs(self, size):
         
         return rvs(self.params, size)
-        
