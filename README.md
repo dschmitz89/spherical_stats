@@ -1,5 +1,5 @@
 # spherical_stats
-Spherical statistics in Python
+![alt text](https://github.com/dschmitz89/spherical_stats/blob/master/Logo_crop.png "")Spherical statistics in Python
 
 ## Scope
 spherical_stats seeks to implement utilities for analyzing spherical data in Python. It is still under heavy development. For performance, the numba JIT compiler is used as backend.
