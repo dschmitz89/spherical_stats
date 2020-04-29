@@ -9,7 +9,7 @@ import numpy as np
 
 def sphere(n_grid, dist = None):
     
-    u = np.linspace(0, np.pi, int(0.5 * n_grid))
+    u = np.linspace(0, np.pi, n_grid)
     
     v = np.linspace(0, 2 * np.pi, n_grid)
 
