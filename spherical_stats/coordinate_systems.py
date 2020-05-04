@@ -61,6 +61,6 @@ def geographical_to_vectors(latitude, longitude, deg = False):
     
     vectors[:, 0] = coslat * np.cos(longitude)
     vectors[:, 1] = coslat * np.sin(longitude)
-    vectors[:, 2] = np.sin(coslat)
+    vectors[:, 2] = np.sin(latitude)
     
     return vectors
