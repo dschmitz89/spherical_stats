@@ -7,7 +7,7 @@ Created on Thu Apr 23 20:58:05 2020
 """
 import numpy as np
 
-def sphere(n_grid, dist = None):
+def sphere(n_grid, func = None):
     
     u = np.linspace(0, np.pi, n_grid)
     
@@ -17,27 +17,20 @@ def sphere(n_grid, dist = None):
     y = np.outer(np.sin(u), np.cos(v))
     z = np.outer(np.cos(u), np.ones_like(v))
         
-    if dist is not None:
+    if func is not None:
         
         u_grid, v_grid = np.meshgrid(u, v)
     
         vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), \
                             np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
     
-        vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid)
+        vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid).T
         
-        #calculate probability density for the faces
+        #calculate function values for the sphere faces
         
-        pdfs_faces = dist.pdf(vertex_vecs.T).reshape(n_grid,n_grid)
-        
-        #create colormap for the faces
-        
-        #normed_facecolors = plt.Normalize(vmin=pdfs_faces.min(), \
-        #                                  vmax=pdfs_faces.max())
-        
-        #facecolors = cmap(normed_facecolors(pdfs_faces.T))
+        f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
 
-        return x, y, z, pdfs_faces
+        return x, y, z, f_faces
     
     else:
         
