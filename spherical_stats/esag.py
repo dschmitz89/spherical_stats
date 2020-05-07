@@ -143,7 +143,7 @@ def pdf(vectors, params):#, probabilities):
         probabilities (ndarray [n,]): ESAG pdf values
     '''
 
-    params = params.astype(np.float64)
+    params = params.astype(vectors.dtype)#(np.float64)
 
     mu = params[:3]
     gamma_1 = params[3]
@@ -153,7 +153,7 @@ def pdf(vectors, params):#, probabilities):
 
     mu_squared = np.sum(np.square(mu))
     
-    probabilities = np.empty(vectors.shape[0],)
+    probabilities = np.empty(vectors.shape[0],vectors.dtype)
     for _ in range(vectors.shape[0]):
 
         probabilities[_] = _likelihood(vectors[_, :], inv_cov, mu, mu_squared)
@@ -213,9 +213,6 @@ def fit(vectors, print_summary = False):
     if print_summary:
         
         optimized_loglikelihood = mle_result.fun
-
-    if print_summary:
-
         n_iterations = mle_result.nit
         mu_opt = optimized_params[:3]
         print("ESAG Fit Summary ")
@@ -225,10 +222,8 @@ def fit(vectors, print_summary = False):
         print("Minimized Log Likelihood: {}".format(optimized_loglikelihood))
         print("Optimization iterations: {}".format(n_iterations))
         print("Elapsed fitting time: {:10.3f}".format(fit_time))
-
-    else:
         
-        return optimized_params
+    return optimized_params
 
 class ESAG(object):
     
