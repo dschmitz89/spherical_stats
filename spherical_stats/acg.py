@@ -2,7 +2,7 @@
 
 
 import numpy as np
-from numba import njit
+from numba import njit, int32
 
 @njit()
 def frobeniusnorm(a):
@@ -32,18 +32,26 @@ def pdf(vectors, cov):
 
     inv_cov = np.linalg.pinv(cov)
     constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
-    n_samples = vectors.shape[0]
-
+    
+    size = vectors.size
+    n_samples = int(size/3)
+    
     pdf = np.empty((n_samples,))
-
-    for _ in range(n_samples):
-
-        x = vectors[_,:]
-
-        pdf[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
-
-    pdf = constant * pdf
-
+    
+    if n_samples > 1:
+        
+        for _ in range(n_samples):
+    
+            x = vectors[_,:]
+    
+            pdf[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
+    
+        pdf = constant * pdf
+        
+    else:
+        
+        pdf[0] = constant * np.sum(vectors * np.dot(inv_cov,vectors))**(-1.5)
+        
     return pdf
 
 @njit(cache = True)
