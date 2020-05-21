@@ -25,32 +25,36 @@ def sample(cov, size):
     return samples
 
 @njit(cache = True)
-def pdf(vectors, cov):
+def likelihood(vector, cov):
+    
+    inv_cov = np.linalg.pinv(cov)
+    constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
+    
+    likelihood = constant * np.sum(vector * np.dot(inv_cov,vector))**(-1.5)
+    
+    return likelihood  
+    
+#@njit(cache = True)
+def _pdf(vectors, cov):
 
     inv_cov = np.linalg.pinv(cov)
     constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
     
     size = vectors.size
     n_samples = int(size/3)
-    
+        
     pdf = np.empty((n_samples,))
     
-    if n_samples > 1:
-        
-        for _ in range(n_samples):
-    
-            x = vectors[_,:]
-    
-            pdf[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
-    
-        pdf = constant * pdf
-        
-    else:
-        
-        pdf[0] = constant * np.sum(vectors * np.dot(inv_cov,vectors))**(-1.5)
+    for _ in range(n_samples):
+
+        x = vectors[_,:]
+
+        pdf[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
+
+    pdf = constant * pdf
         
     return pdf
-
+    
 @njit(cache = True)
 def fit(vectors):
     '''
@@ -126,4 +130,12 @@ class ACG(object):
     
     def pdf(self, x):
         
-        return pdf(x, self.cov_matrix)
+        if x.size > int(3):
+            
+            pdf = _pdf(x, self.cov_matrix)
+            
+        else:
+            
+            pdf = np.array([likelihood(x, self.cov_matrix)])
+        
+        return pdf 
