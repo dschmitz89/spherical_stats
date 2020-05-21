@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-
-
 import numpy as np
-from numba import njit, int32
+from numba import njit
 
 @njit()
 def frobeniusnorm(a):
