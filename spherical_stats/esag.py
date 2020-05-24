@@ -130,6 +130,33 @@ def _likelihood(x, inv_cov, mu, mu_squared):
     return l
 
 @njit(cache = True)
+def _one_pdf(vector, params):
+    '''
+    Calculates the ESAG PDF of one vector
+           
+    Args:
+        vector (ndarray [3,): set of direction vectors 
+        params (ndarray [5,]): ESAG parameters 
+
+    Returns:
+
+        pdf (ndarray [1,]): ESAG pdf value
+    '''    
+    params = params.astype(vector.dtype)#(np.float64)
+
+    mu = params[:3]
+    gamma_1 = params[3]
+    gamma_2 = params[-1]
+
+    inv_cov = _calc_inv_cov_matrix(mu, gamma_1, gamma_2)
+
+    mu_squared = np.sum(np.square(mu))
+    
+    pdf = _likelihood(vector, inv_cov, mu, mu_squared)
+        
+    return np.array([pdf])
+
+@njit(cache = True)
 def pdf(vectors, params):#, probabilities):
     '''
     Calculates the ESAG PDF of a set of vectors
@@ -237,7 +264,13 @@ class ESAG(object):
     
     def pdf(self, vectors):
         
-        return pdf(vectors, self.params)
+        if vectors.size > 3:
+            
+            return pdf(vectors, self.params)
+        
+        else:
+        
+            return _one_pdf(vectors, self.params)
     
     def rvs(self, size):
         
