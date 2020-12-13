@@ -1,62 +1,28 @@
 import numpy as np
-from numba import njit
-
-@njit()
-def frobeniusnorm(a):
-
-    return np.trace(a*a)
-
-def sample(cov, size):
-
-    #test cov for positive definiteness
-
-    if np.all(np.linalg.eigvals(cov) > 0):
-
-        print("positive definite")
+from numba import njit, guvectorize, float64, float32, void
+from .utils import _invertmatrix
     
-    zero = np.array([0,0,0])
+types = ["void(float64[:, :], float64[:, :], float64[:])", \
+        "void(float32[:, :], float32[:, :], float32[:])"]
+@guvectorize(types, "(n, m), (m, m) -> (n)", nopython=True, target="cpu", cache = True)
+def _pdf(vectors, cov, pdfvals):
 
-    unnormalized_samples = np.random.multivariate_normal(zero, cov, size)
-
-    norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
-
-    samples = unnormalized_samples/norms
-
-    return samples
-
-@njit(cache = True)
-def likelihood(vector, cov):
-    
-    inv_cov = np.linalg.pinv(cov)
-    constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
-    
-    likelihood = constant * np.sum(vector * np.dot(inv_cov,vector))**(-1.5)
-    
-    return likelihood  
-    
-#@njit(cache = True)
-def _pdf(vectors, cov):
-
-    inv_cov = np.linalg.pinv(cov)
+    inv_cov = _invertmatrix(cov).astype(vectors.dtype)
     constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
     
     size = vectors.size
     n_samples = int(size/3)
         
-    pdf = np.empty((n_samples,))
-    
     for _ in range(n_samples):
 
         x = vectors[_,:]
 
-        pdf[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
+        pdfvals[_] = np.sum(x * (inv_cov@x))**(-1.5)#np.dot(inv_cov,x)
 
-    pdf = constant * pdf
-        
-    return pdf
+    pdfvals = constant * pdfvals
     
 @njit(cache = True)
-def fit(vectors):
+def fit(vectors, tol):
     '''
     Finds MLE of ACG distribution using the fix point algorithm
     Source: Tyler, Statistical  analysis  for  the  angular  central Gaussian  distribution  on  the  sphere
@@ -71,11 +37,11 @@ def fit(vectors):
 
     frob = 1e12
 
-    while frob > 1e-8:
+    while frob > tol:
 
         l_last = l
 
-        l_inv = np.linalg.inv(l)
+        l_inv = _invertmatrix(l).astype(vectors.dtype)
 
         num = np.zeros((3,3))
         denum = 0
@@ -94,7 +60,7 @@ def fit(vectors):
 
         diffmatrix = l - l_last
 
-        frob = frobeniusnorm(diffmatrix)
+        frob = np.trace(diffmatrix*diffmatrix)
 
         if iter == 1000:
             print("Exceeded maximum number of iterations")
@@ -112,30 +78,32 @@ class ACG(object):
         
         if self.cov_matrix is not None:
             
-            if np.all(np.linalg.eigvals(self.cov_matrix) > 0):
+            if not np.all(np.linalg.eigvals(self.cov_matrix) > 0):
                 
-                pass
-            
-            else:
-            
                 raise TypeError("Covariance matrix must be positive definite!")
             
-    def fit(self, vectors):
+    def fit(self, vectors, tol = 1e-4):
         
-        self.cov_matrix = fit(vectors)
+        self.cov_matrix = fit(vectors, tol)
         
     def rvs(self, size):
         
-        return sample(self.cov_matrix, size)
+        zero = np.array([0,0,0])
+
+        unnormalized_samples = np.random.multivariate_normal(zero, self.cov_matrix, size)
+
+        norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
+
+        samples = unnormalized_samples/norms
+
+        return samples
     
     def pdf(self, x):
         
-        if x.size > int(3):
-            
-            pdf = _pdf(x, self.cov_matrix)
-            
-        else:
-            
-            pdf = np.array([likelihood(x, self.cov_matrix)])
+        if x.size == 3:
+            x = x.reshape(1, -1)
         
-        return pdf 
+        pdfvals = np.empty(x.shape[0], dtype=x.dtype)
+        _pdf(x, self.cov_matrix, pdfvals)
+        
+        return pdfvals
