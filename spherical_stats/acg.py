@@ -2,24 +2,26 @@ import numpy as np
 from numba import njit, guvectorize, float64, float32, void
 from .utils import _invertmatrix
     
-types = ["void(float64[:, :], float64[:, :], float64[:])", \
-        "void(float32[:, :], float32[:, :], float32[:])"]
-@guvectorize(types, "(n, m), (m, m) -> (n)", nopython=True, target="cpu", cache = True)
-def _pdf(vectors, cov, pdfvals):
+@njit(cache = True)
+def _pdf(vectors, cov):
 
     inv_cov = _invertmatrix(cov).astype(vectors.dtype)
     constant = 1/(4* np.pi * np.sqrt(np.linalg.det(cov)))
     
     size = vectors.size
     n_samples = int(size/3)
-        
+    
+    pdfvals = np.empty((n_samples, ), vectors.dtype)
+
     for _ in range(n_samples):
 
         x = vectors[_,:]
 
-        pdfvals[_] = np.sum(x * (inv_cov@x))**(-1.5)#np.dot(inv_cov,x)
+        pdfvals[_] = np.sum(x * np.dot(inv_cov,x))**(-1.5)
 
     pdfvals = constant * pdfvals
+
+    return pdfvals
     
 @njit(cache = True)
 def fit(vectors, tol):
@@ -103,7 +105,6 @@ class ACG(object):
         if x.size == 3:
             x = x.reshape(1, -1)
         
-        pdfvals = np.empty(x.shape[0], dtype=x.dtype)
-        _pdf(x, self.cov_matrix, pdfvals)
+        pdfvals = _pdf(x, self.cov_matrix)
         
         return pdfvals
