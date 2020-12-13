@@ -6,7 +6,7 @@ from numba import njit
 from math import erf, sqrt, exp
 from time import time
 
-def rvs(params, size):
+def _rvs(params, size):
     '''
     Calculates random samples from ESAG distribution
     
@@ -19,7 +19,6 @@ def rvs(params, size):
         
     '''
 
-    params = params.astype(float)
     mu = params[:3]
     gamma_1 = params[3]
     gamma_2 = params[-1]
@@ -130,34 +129,7 @@ def _likelihood(x, inv_cov, mu, mu_squared):
     return l
 
 @njit(cache = True)
-def _one_pdf(vector, params):
-    '''
-    Calculates the ESAG PDF of one vector
-           
-    Args:
-        vector (ndarray [3,): set of direction vectors 
-        params (ndarray [5,]): ESAG parameters 
-
-    Returns:
-
-        pdf (ndarray [1,]): ESAG pdf value
-    '''    
-    params = params.astype(vector.dtype)#(np.float64)
-
-    mu = params[:3]
-    gamma_1 = params[3]
-    gamma_2 = params[-1]
-
-    inv_cov = _calc_inv_cov_matrix(mu, gamma_1, gamma_2)
-
-    mu_squared = np.sum(np.square(mu))
-    
-    pdf = _likelihood(vector, inv_cov, mu, mu_squared)
-        
-    return np.array([pdf])
-
-@njit(cache = True)
-def pdf(vectors, params):#, probabilities):
+def _pdf(vectors, params):#, probabilities):
     '''
     Calculates the ESAG PDF of a set of vectors
            
@@ -202,24 +174,20 @@ def _log_likelihood(params, samples):
         log-likelihood (float)
     '''
 
-    probabilities = pdf(samples, params)
+    probabilities = _pdf(samples, params)
 
     return - np.log(probabilities).sum()
     
-def fit(vectors, print_summary = False):
+def _fit(vectors, print_summary = False):
     '''
     Fits ESAG distribution to a sample of vectors
 
     Args:
         vectors (ndarray [n,3]): vectors to fit ESAG at
-        optimizer (str, Optiona, default='L-BFGS-B'): 
-            which one of scipy's optimizers to use
-        return_logp (bool, Optional): also return logp
         print_summary (bool, Optional): print fit info
 
     Returns:
-        optimized_params: Fitted ESAG params as numpy array (5,)
-        optimized_likelihood: logp value at found minimum
+        optimized_params (ndarray [5]): Fitted ESAG params
     '''
 
     starting_guesses = (1,1,1,1e-5,1e-5)
@@ -257,21 +225,25 @@ class ESAG(object):
     def __init__(self, params = None):
         
         self.params = params
-    
+        
+        if self.params is not None:
+            
+            if not self.params.dtype == np.float64:
+
+                self.params = self.params.astype(float)
+
     def fit(self, vectors, verbose=False):
         
-        self.params = fit(vectors, print_summary = verbose)
+        self.params = _fit(vectors, print_summary = verbose)
     
     def pdf(self, vectors):
         
-        if vectors.size > 3:
+        if vectors.size == 3:
             
-            return pdf(vectors, self.params)
-        
-        else:
-        
-            return _one_pdf(vectors, self.params)
+            vectors = vectors.reshape(1, -1)
+
+        return _pdf(vectors, self.params)
     
     def rvs(self, size):
         
-        return rvs(self.params, size)
+        return _rvs(self.params, size)
