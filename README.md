@@ -1,8 +1,11 @@
 # spherical_stats
 ![alt text](https://github.com/dschmitz89/spherical_stats/blob/master/Logo_crop.png "")Spherical statistics in Python
 
-## Scope
-spherical_stats implements utilities for analyzing spherical data in Python. It is still under heavy development. For performance, the numba JIT compiler is used as backend.
+## Installation
+Clone the repository:
+```bash
+pip install spherical_stats
+```
 
 ## Features:
 
@@ -10,10 +13,10 @@ spherical_stats implements utilities for analyzing spherical data in Python. It 
 * Visualization helper functions to quickly generate data to be plotted with plotly/matplotlib/ipyvolume: 
     * Sphere creation and evaluation of a function over its surface
     * Spherical histogram
-* Descriptive statisics: 
+* Descriptive statistics: 
     * Spherical mean and spherical variance
     * Orientation tensor
-* Parametric distributions:
+* Parametric distributions with scipy.stats like API:
     * Modeling axial data: Angular central gaussian distribution (ACG)
     * Modeling vector data: Elliptically symmetrical angular gausian distribution (ESAG)
 
@@ -36,10 +39,3 @@ Documentation
 
 Mixture distributions of ESAG and ACG
 
-## Installation
-Clone the repository:
-```bash
-git clone https://github.com/dschmitz89/spherical_stats/
-cd spherical_stats
-pip install .
-```
