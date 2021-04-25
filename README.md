@@ -2,7 +2,6 @@
 ![alt text](https://github.com/dschmitz89/spherical_stats/blob/master/Logo_crop.png "")Spherical statistics in Python
 
 ## Installation
-Clone the repository:
 ```bash
 pip install spherical_stats
 ```
@@ -27,8 +26,15 @@ from spherical_stats import ESAG
 import numpy as np
 
 esag_params = np.array([1,3,5,2,6])
+
+#Instantiate ESAG class with known parameters
 esag_known = ESAG(esag_params)
+
+#generate 500 ESAG samples and calculate their PDF vals
 samples = esag_known.rvs(500)
+pdf_vals = esag.pdf(samples)
+
+#Instantiate ESAG class and fit distribution parameters given samples
 esag_unknown = ESAG()
 esag_unknown.fit(samples, verbose = True)
 ```
