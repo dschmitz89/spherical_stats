@@ -222,6 +222,24 @@ def _fit(vectors, print_summary = False):
     return optimized_params
 
 class ESAG(object):
+    '''
+    Elliptically symmetrical angular Central Gaussian distribution
+
+    Args:
+        params (optional, ndarray (5, ) ):
+        Parameters of the distribution. The parameters are the following:
+
+        .. math:
+            params=(\mu_0, \mu_1, \mu_2, \gamma_0, \gamma_1)
+        where $\mu=(\mu_0, \mu_1, \mu_2)$ represents the principal orientation and 
+        $\gamma_0$ and $\gamma_1$ describe the shape of the ellipse.
+    Notes
+    -------
+    Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
+    Statistics and Computing volume 28, 689–697 (2018)\n
+    Note that unlike the original Matlab implementation the likelihood is optimized using the L-BFGS-B algorithm
+     using a finite difference approximation of the gradient. So far, this has proven to work succesfully.
+    '''
     
     def __init__(self, params = None):
         
@@ -234,17 +252,52 @@ class ESAG(object):
                 self.params = self.params.astype(float)
 
     def fit(self, vectors, verbose=False):
-        
+        '''
+        Fits the elliptically symmetrical angular Central Gaussian distribution to data
+
+        Arguments
+        ----------
+        vectors : ndarray (n, 3)
+            Vector data the distribution is fitted to
+        verbose : bool, optional, default False
+            Print additional information about the fit
+        '''
+                
         self.params = _fit(vectors, print_summary = verbose)
     
     def pdf(self, vectors):
-        
+        '''
+        Calculate probability density function of a set of vectors ``x`` given a parameterized 
+        elliptically symmetric angular Central Gaussian distribution
+
+        Arguments
+        ----------
+        x : ndarray (size, 3)
+            Vectors to evaluate the PDF at
+
+        Returns
+        ----------
+        pdfvals : ndarray (size,)
+            PDF values as ndarray of shape (size,)
+        '''        
         if vectors.size == 3:
             
             vectors = vectors.reshape(1, -1)
 
         return _pdf(vectors, self.params)
     
-    def rvs(self, size):
-        
+    def rvs(self, size = 1):
+        '''
+        Generate samples from the elliptically symmetric angular central gaussian distribution
+
+        Arguments
+        ----------
+        size : int, optional, default 1
+            Number of samples
+
+        Returns
+        ----------
+        samples : ndarray (size, 3)
+            samples as ndarray of shape (size, 3)
+        '''        
         return _rvs(self.params, size)

@@ -8,8 +8,20 @@ Created on Tue Apr 28 15:22:05 2020
 import numpy as np
 from numba import njit
 
-def sphericalrand(size):
-    
+def sphericalrand(size=1):
+    '''
+    Generate uniform random samples on a sphere
+
+    Arguments
+    ----------
+    size : int, optional, default 1
+        Number of samples
+
+    Returns
+    ----------
+    samples : ndarray (size, 3)
+        samples as ndarray of shape (size, 3)
+    '''
     ones = np.ones((size, ))
     u = 2 * np.random.rand(size) - ones
     phi = 2 * np.pi * np.random.rand(size)
@@ -17,7 +29,7 @@ def sphericalrand(size):
     theta = np.sqrt(ones - np.square(u))
     samples = np.zeros((size, 3))
     samples[:, 0] = theta * np.cos(phi)
-    samples[:, 1] = theta = np.sin(phi)
+    samples[:, 1] = theta * np.sin(phi)
     samples[:, 2] = u
 
     return samples
