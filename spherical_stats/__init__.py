@@ -6,16 +6,16 @@ from ._descriptive_stats import spherical_mean, spherical_variance, orientation_
 from ._utils import sphericalrand
 
 __all__ = [
-    ACG,
-    ESAG,
-    sphere,
-    spherical_hist,
-    spherical_mean,
-    spherical_variance,
-    vectors_to_polar,
-    polar_to_vectors,
-    vectors_to_geographical,
-    geographical_to_vectors,
-    orientation_matrix,
-    sphericalrand,
+    "ACG",
+    "ESAG",
+    "sphere",
+    "spherical_hist",
+    "spherical_mean",
+    "spherical_variance",
+    "vectors_to_polar",
+    "polar_to_vectors",
+    "vectors_to_geographical",
+    "geographical_to_vectors",
+    "orientation_matrix",
+    "sphericalrand",
 ]
