@@ -9,7 +9,10 @@ Created on Sat May  2 16:13:25 2020
 import numpy as np
 
 def vectors_to_polar(vectors, deg = False):
-    
+    '''
+    Transform a set of vectors to polar coordinates
+    '''
+
     phi = np.arctan2(vectors[:, 1],vectors[:, 0])
     theta = np.arccos(vectors[:, 2])
     
@@ -21,7 +24,10 @@ def vectors_to_polar(vectors, deg = False):
     return theta, phi
 
 def polar_to_vectors(theta, phi, deg = False):
-    
+    '''
+    Transform a set of polar coordinates to vectors
+    '''
+        
     if deg == True:
         
         phi = np.deg2rad(phi)
@@ -37,7 +43,10 @@ def polar_to_vectors(theta, phi, deg = False):
     return vecs
 
 def vectors_to_geographical(vectors, deg = False):
-    
+    '''
+    Transform a set of vectors to geographical coordinates
+    '''
+        
     longitude = np.arctan2(vectors[:, 1],vectors[:, 0])
     latitude = np.arcsin(vectors[:, 2])
     
@@ -49,7 +58,10 @@ def vectors_to_geographical(vectors, deg = False):
     return latitude, longitude
 
 def geographical_to_vectors(latitude, longitude, deg = False):
-    
+    '''
+    Transform a set of geographical coordinates to vectors
+    '''
+        
     if deg == True:
         
         latitude = np.deg2rad(latitude)

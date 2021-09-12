@@ -8,7 +8,10 @@ Created on Thu Apr 23 20:58:05 2020
 import numpy as np
 
 def sphere(n_grid, func = None):
-    
+    '''
+    Create vectors to conveniently plot a sphere
+    '''
+
     u = np.linspace(0, np.pi, n_grid)
     
     v = np.linspace(0, 2 * np.pi, n_grid)
@@ -37,7 +40,10 @@ def sphere(n_grid, func = None):
         return x, y, z
     
 def spherical_hist(vectors, n_grid = 100):
-    
+    '''
+    Basic spherical histogram
+    '''
+        
     #u = np.linspace(0, np.pi , n_grid, endpoint = True)
     u = np.flip(np.arccos(np.linspace(-1,1,n_grid, endpoint = True)))
     v = np.linspace(-np.pi, np.pi, n_grid, endpoint = True)

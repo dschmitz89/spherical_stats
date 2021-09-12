@@ -9,7 +9,9 @@ Basic functionalities for spherical statistics.
 
 Installation
 ===========================================
-pip install spherical_stats
+.. code:: bash
+
+   pip install spherical_stats
 
 Contents
 ===========================================

@@ -228,11 +228,7 @@ class ESAG(object):
     Args:
         params (optional, ndarray (5, ) ):
         Parameters of the distribution. The parameters are the following:
-
-        .. math:
-            params=(\mu_0, \mu_1, \mu_2, \gamma_0, \gamma_1)
-        where $\mu=(\mu_0, \mu_1, \mu_2)$ represents the principal orientation and 
-        $\gamma_0$ and $\gamma_1$ describe the shape of the ellipse.
+    
     Notes
     -------
     Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
