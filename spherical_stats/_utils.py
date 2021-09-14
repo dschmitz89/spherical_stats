@@ -20,7 +20,6 @@ def sphericalrand(size=1):
     Returns
     ----------
     samples : ndarray (size, 3)
-        samples as ndarray of shape (size, 3)
     '''
     ones = np.ones((size, ))
     u = 2 * np.random.rand(size) - ones
