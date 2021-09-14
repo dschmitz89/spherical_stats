@@ -234,8 +234,8 @@ class ESAG(object):
 
         params=(\mu_0, \mu_1, \mu_2, \gamma_1, \gamma_2)
     
-    The principal orientation vectors is given by :math:`\mathbf{\mu}=(\mu_0, \mu_1, \mu_2)` and the shape
-    of the distribution is controlled by the parameters :math:`\gamma_1` and :math:`\gamma_2`.
+    The principal orientation vectors is given by the normalized vector :math:`\mathbf{\mu}=(\mu_0, \mu_1, \mu_2)/||(\mu_0, \mu_1, \mu_2)||`
+     and the shape of the distribution is controlled by the parameters :math:`\gamma_1` and :math:`\gamma_2`.
 
     Notes
     -------
