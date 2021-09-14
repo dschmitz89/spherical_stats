@@ -7,9 +7,21 @@ Created on Thu Apr 23 20:58:05 2020
 """
 import numpy as np
 
-def sphere(n_grid, func = None):
+def sphere(n_grid):
     '''
     Create vectors to conveniently plot a sphere
+
+    Arguments
+    ----------
+    n_grid  : int, 
+        number of grid points for the sphere for both
+        longitude and lattitude
+
+    Returns
+    ----------
+    x : ndarray 
+    y : ndarray 
+    z : ndarray 
     '''
 
     u = np.linspace(0, np.pi, n_grid)
@@ -19,7 +31,8 @@ def sphere(n_grid, func = None):
     x = np.outer(np.sin(u), np.sin(v))
     y = np.outer(np.sin(u), np.cos(v))
     z = np.outer(np.cos(u), np.ones_like(v))
-        
+
+    '''   
     if func is not None:
         
         u_grid, v_grid = np.meshgrid(u, v)
@@ -36,12 +49,27 @@ def sphere(n_grid, func = None):
         return x, y, z, f_faces
     
     else:
-        
-        return x, y, z
+    '''    
+    return x, y, z
     
 def spherical_hist(vectors, n_grid = 100):
     '''
     Basic spherical histogram
+
+    Arguments
+    ----------
+    vectors : ndarray (n, 3)
+        Vectors to calculate histogram of
+    n_grid  : int, optional, default 100
+        number of grid points for the sphere for both
+        longitude and lattitude
+
+    Returns
+    ----------
+    hist : ndarray
+    x : ndarray 
+    y : ndarray 
+    z : ndarray 
     '''
         
     #u = np.linspace(0, np.pi , n_grid, endpoint = True)

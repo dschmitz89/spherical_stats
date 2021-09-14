@@ -70,8 +70,7 @@ class ACG(object):
     Angular Central Gaussian distribution
 
     Args:
-        cov_matrix (optional, ndarray (3, 3) ):
-        Covariance matrix of the distribution
+        cov_matrix (optional, ndarray (3, 3) ): Covariance matrix of the ACG distribution
 
     Notes
     -------
@@ -103,6 +102,7 @@ class ACG(object):
             Convergence tolerance of the fix point algorithm. Tolerance is measured as the difference between the Frobenius 
             norms of the estimated covariance matrix between two iterations.
         '''
+        
         self.cov_matrix = fit(vectors, tol)
         
     def rvs(self, size = 1):
@@ -119,15 +119,22 @@ class ACG(object):
         samples : ndarray (size, 3)
             samples as ndarray of shape (size, 3)
         '''
-        zero = np.array([0,0,0])
 
-        unnormalized_samples = np.random.multivariate_normal(zero, self.cov_matrix, size)
+        if self.cov_matrix != None:
 
-        norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
+            zero = np.array([0,0,0])
 
-        samples = unnormalized_samples/norms
+            unnormalized_samples = np.random.multivariate_normal(zero, self.cov_matrix, size)
 
-        return samples
+            norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
+
+            samples = unnormalized_samples/norms
+
+            return samples
+
+        else:
+
+            raise ValueError("ACG distribution not parameterized. Fit it to data or set covariance matrix manually.")
     
     def pdf(self, x):
         '''
@@ -152,4 +159,4 @@ class ACG(object):
             
             return pdfvals
         else:
-            raise ValueError("No covariance matrix available. Distribution not properly initialized.")
+            raise ValueError("ACG distribution not parameterized. Fit it to data or set covariance matrix manually")

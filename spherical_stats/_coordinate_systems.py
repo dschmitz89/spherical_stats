@@ -11,6 +11,19 @@ import numpy as np
 def vectors_to_polar(vectors, deg = False):
     '''
     Transform a set of vectors to polar coordinates
+
+    Arguments
+    ----------
+    vectors : ndarray (n, 3)
+        Vector data 
+    deg : bool, optional, default False
+        If True, returns output polar angles in degrees. If False, returns angles in radian.
+    Returns
+    ----------
+    theta : ndarray (size, )
+        Polar angle
+    phi : ndarray (size, )
+        Azimuthal angle
     '''
 
     phi = np.arctan2(vectors[:, 1],vectors[:, 0])
@@ -26,6 +39,19 @@ def vectors_to_polar(vectors, deg = False):
 def polar_to_vectors(theta, phi, deg = False):
     '''
     Transform a set of polar coordinates to vectors
+
+    Arguments
+    ----------
+    theta : ndarray (n, )
+        Polar angle
+    phi : ndarray (n, )
+        Azimuthal angle
+    deg : bool, optional, default False
+        If True, assumes that input is in degrees. If False, assumes that input is in radian.
+    Returns
+    ----------
+    vectors : ndarray (n, 3)
+        Vector data 
     '''
         
     if deg == True:
@@ -45,6 +71,19 @@ def polar_to_vectors(theta, phi, deg = False):
 def vectors_to_geographical(vectors, deg = False):
     '''
     Transform a set of vectors to geographical coordinates
+    
+    Arguments
+    ----------
+    vectors : ndarray (n, 3)
+        Vector data 
+    deg : bool, optional, default False
+        If True, returns output geographical angles in degrees. If False, returns angles in radian.
+    Returns
+    ----------
+    latitude : ndarray (n, )
+        Geographical latitude
+    longitude : ndarray (n, )
+        Geographical longitude
     '''
         
     longitude = np.arctan2(vectors[:, 1],vectors[:, 0])
@@ -60,6 +99,19 @@ def vectors_to_geographical(vectors, deg = False):
 def geographical_to_vectors(latitude, longitude, deg = False):
     '''
     Transform a set of geographical coordinates to vectors
+
+    Arguments
+    ----------
+    latitude : ndarray (n, )
+        Polar angle
+    longitude : ndarray (n, )
+        Azimuthal angle
+    deg : bool, optional, default False
+        If True, assumes that input is in degrees. If False, assumes that input is in radian.
+    Returns
+    ----------
+    vectors : ndarray (n, 3)
+        Vector data
     '''
         
     if deg == True:

@@ -227,14 +227,23 @@ class ESAG(object):
 
     Args:
         params (optional, ndarray (5, ) ):
-        Parameters of the distribution. The parameters are the following:
+        Parameters of the distribution. 
+        
+    The parameters are the following:
     
+    .. math:
+
+        params=(\mu_0, \mu_1, \mu_2, \gamma_1, \gamma_2)
+    
+    The principal orientation vectors is given by :math:`(\mu_0, \mu_1, \mu_2)` and the shape
+    of the distribution is controlled by the parameters :math:`\gamma_1` and :math:`\gamma_2`.
+
     Notes
     -------
     Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
     Statistics and Computing volume 28, 689–697 (2018)\n
-    Note that unlike the original Matlab implementation the likelihood is optimized using the L-BFGS-B algorithm
-     using a finite difference approximation of the gradient. So far, this has proven to work succesfully.
+    Unlike the original Matlab implementation the likelihood is optimized using the L-BFGS-B algorithm
+    using a finite difference approximation of the gradient. So far, this has proven to work succesfully.
     '''
     
     def __init__(self, params = None):
@@ -275,12 +284,17 @@ class ESAG(object):
         ----------
         pdfvals : ndarray (size,)
             PDF values as ndarray of shape (size,)
-        '''        
-        if vectors.size == 3:
-            
-            vectors = vectors.reshape(1, -1)
+        '''
 
-        return _pdf(vectors, self.params)
+        if self.params != None:
+
+            if vectors.size == 3:
+                vectors = vectors.reshape(1, -1)
+
+            return _pdf(vectors, self.params)
+
+        else:
+            raise ValueError("ESAG distibution not parameterized yet. Set parameters or fit ESAG to data.")
     
     def rvs(self, size = 1):
         '''
@@ -295,5 +309,11 @@ class ESAG(object):
         ----------
         samples : ndarray (size, 3)
             samples as ndarray of shape (size, 3)
-        '''        
-        return _rvs(self.params, size)
+        '''   
+
+        if self.params != None: 
+            return _rvs(self.params, size)
+
+        else:
+            raise ValueError("ESAG distibution not parameterized yet. Set parameters or fit ESAG to data.")
+        
