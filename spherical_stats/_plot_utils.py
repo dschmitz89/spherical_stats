@@ -7,14 +7,14 @@ Created on Thu Apr 23 20:58:05 2020
 """
 import numpy as np
 
-def sphere(n_grid):
+def sphere(n_grid = 30):
     '''
     Create vectors to conveniently plot a sphere
 
     Arguments
     ----------
-    n_grid  : int, 
-        number of grid points for the sphere for both
+    n_grid  : int, optional, default 30
+        Number of grid points for the sphere for both
         longitude and lattitude
 
     Returns

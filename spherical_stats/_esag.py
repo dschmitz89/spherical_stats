@@ -226,24 +226,23 @@ class ESAG(object):
     Elliptically symmetrical angular Central Gaussian distribution
 
     Args:
-        params (optional, ndarray (5, ) ):
-        Parameters of the distribution. 
+        params (optional, ndarray (5, ) ): Parameters of the distribution
         
     The parameters are the following:
     
-    .. math:
+    .. math::
 
         params=(\mu_0, \mu_1, \mu_2, \gamma_1, \gamma_2)
     
-    The principal orientation vectors is given by :math:`(\mu_0, \mu_1, \mu_2)` and the shape
+    The principal orientation vectors is given by :math:`\mathbf{\mu}=(\mu_0, \mu_1, \mu_2)` and the shape
     of the distribution is controlled by the parameters :math:`\gamma_1` and :math:`\gamma_2`.
 
     Notes
     -------
     Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
     Statistics and Computing volume 28, 689–697 (2018)\n
-    Unlike the original Matlab implementation the likelihood is optimized using the L-BFGS-B algorithm
-    using a finite difference approximation of the gradient. So far, this has proven to work succesfully.
+    Unlike the original Matlab implementation the distribution is fitted using the L-BFGS-B algorithm
+    based on a finite difference approximation of the gradient. So far, this has proven to work succesfully.
     '''
     
     def __init__(self, params = None):
