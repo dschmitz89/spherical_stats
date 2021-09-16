@@ -16,6 +16,8 @@ def sphere(n_grid = 30, equalize_areas = True):
     n_grid  : int, optional, default 30
         Number of grid points for the sphere for both
         longitude and lattitude
+    equalize_areas : bool, optional, default True
+        If True, enforces that surface patches are of same area
 
     Returns
     ----------
@@ -39,8 +41,26 @@ def sphere(n_grid = 30, equalize_areas = True):
    
     return x, y, z
 
-def evaluate_on_sphere(func, n_grid = N_GRID, equalize_areas = True):
-    
+def evaluate_on_sphere(func, n_grid = 30, equalize_areas = True):
+    '''
+    Evaluate a function over a sphere
+
+    Arguments
+    ----------
+    func : callable
+        Must be of the form ndarray (n, 3)-> (n)
+    n_grid  : int, optional, default 30
+        Number of grid points for the sphere for both
+        longitude and lattitude
+    equalize_areas : bool, optional, default True
+        If True, enforces that surface patches are of same area
+
+    Returns
+    ----------
+    x : ndarray 
+    y : ndarray 
+    z : ndarray 
+    '''    
     if equalize_areas == True:
         u = np.arccos(np.linspace(-1, 1, n_grid))
 
@@ -60,7 +80,7 @@ def evaluate_on_sphere(func, n_grid = N_GRID, equalize_areas = True):
     f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
     
     return f_faces
-        
+
 def spherical_hist(vectors, n_grid = 100):
     '''
     Basic spherical histogram
