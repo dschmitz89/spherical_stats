@@ -7,6 +7,25 @@ Created on Tue Apr 28 15:22:05 2020
 """
 import numpy as np
 from numba import njit
+from os.path import dirname
+
+PATH = dirname(__file__)
+
+def load_northpole():
+    '''
+    Load example data for finding the historical position of the north pole
+
+    Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
+    Statistics and Computing volume 28, 689–697 (2018)
+
+    Returns
+    ----------
+    data : ndarray (33, 3)
+    '''
+
+    data = np.loadtxt(open(PATH + '/tasmanianData.csv', 'rb'), delimiter=",")
+
+    return data.T
 
 def sphericalrand(size=1):
     '''

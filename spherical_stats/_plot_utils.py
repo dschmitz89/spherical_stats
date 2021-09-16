@@ -7,7 +7,7 @@ Created on Thu Apr 23 20:58:05 2020
 """
 import numpy as np
 
-def sphere(n_grid = 30):
+def sphere(n_grid = 30, equalize_areas = True):
     '''
     Create vectors to conveniently plot a sphere
 
@@ -24,34 +24,43 @@ def sphere(n_grid = 30):
     z : ndarray 
     '''
 
-    u = np.linspace(0, np.pi, n_grid)
+    if equalize_areas == True:
+        u = np.arccos(np.linspace(-1, 1, n_grid))
+
+    else:    
+        u = np.linspace(0, np.pi, n_grid)
     
+
     v = np.linspace(0, 2 * np.pi, n_grid)
 
     x = np.outer(np.sin(u), np.sin(v))
     y = np.outer(np.sin(u), np.cos(v))
     z = np.outer(np.cos(u), np.ones_like(v))
-
-    '''   
-    if func is not None:
-        
-        u_grid, v_grid = np.meshgrid(u, v)
-    
-        vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), \
-                            np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
-    
-        vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid).T
-        
-        #calculate function values for the sphere faces
-        
-        f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
-
-        return x, y, z, f_faces
-    
-    else:
-    '''    
+   
     return x, y, z
+
+def evaluate_on_sphere(func, n_grid = N_GRID, equalize_areas = True):
     
+    if equalize_areas == True:
+        u = np.arccos(np.linspace(-1, 1, n_grid))
+
+    else:    
+        u = np.linspace(0, np.pi, n_grid)
+    v = np.linspace(0, 2 * np.pi, n_grid)
+    
+    u_grid, v_grid = np.meshgrid(u, v)
+
+    vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), \
+                        np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
+
+    vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid).T
+
+    #calculate function values for the sphere faces
+
+    f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
+    
+    return f_faces
+        
 def spherical_hist(vectors, n_grid = 100):
     '''
     Basic spherical histogram

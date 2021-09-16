@@ -285,7 +285,7 @@ class ESAG(object):
             PDF values as ndarray of shape (size,)
         '''
 
-        if self.params != None:
+        if self.params is not None:
 
             if vectors.size == 3:
                 vectors = vectors.reshape(1, -1)
