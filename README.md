@@ -1,13 +1,15 @@
 # spherical_stats
-![alt text](https://github.com/dschmitz89/spherical_stats/blob/master/Logo_crop.png "")Spherical statistics in Python
+Spherical statistics in Python
 
 ## Installation
 ```bash
 pip install spherical_stats
 ```
+## Documentation
+
+Refer to the [online documentation](https://spherical-stats.readthedocs.io/en/latest/index.html) for examples and API reference.
 
 ## Features:
-
 
 * Visualization helper functions to quickly generate data to be plotted with plotly/matplotlib/ipyvolume: 
     * Sphere creation and evaluation of a function over its surface
@@ -38,10 +40,3 @@ pdf_vals = esag.pdf(samples)
 esag_unknown = ESAG()
 esag_unknown.fit(samples, verbose = True)
 ```
-
-## Coming up
-
-Documentation
-
-Mixture distributions of ESAG and ACG
-
