@@ -31,7 +31,7 @@ def spherical_mean(vectors):
 
     Returns
     -------
-    mean : ndarray (n,3)
+    mean : ndarray (3, )
     '''
     r = resultant_length(vectors)
         
