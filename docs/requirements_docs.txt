@@ -1,0 +1,5 @@
+nbsphinx
+ipython
+numba>0.44
+numpy
+scipy>0.11

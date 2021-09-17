@@ -48,7 +48,7 @@ def evaluate_on_sphere(func, n_grid = 30, equalize_areas = True):
     Arguments
     ----------
     func : callable
-        Must be of the form ndarray (n, 3)-> (n)
+        Must be of the form ndarray (n, 3)-> (n, )
     n_grid  : int, optional, default 30
         Number of grid points for the sphere for both
         longitude and lattitude
@@ -57,9 +57,7 @@ def evaluate_on_sphere(func, n_grid = 30, equalize_areas = True):
 
     Returns
     ----------
-    x : ndarray 
-    y : ndarray 
-    z : ndarray 
+    f : ndarray (n, )
     '''    
     if equalize_areas == True:
         u = np.arccos(np.linspace(-1, 1, n_grid))

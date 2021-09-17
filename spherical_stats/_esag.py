@@ -310,7 +310,7 @@ class ESAG(object):
             samples as ndarray of shape (size, 3)
         '''   
 
-        if self.params != None: 
+        if self.params is not None: 
             return _rvs(self.params, size)
 
         else:
