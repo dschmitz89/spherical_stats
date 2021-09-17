@@ -4,3 +4,4 @@ numba>0.44
 numpy
 scipy>0.11
 docutils < 0.17
+sphinx_rtd_theme
