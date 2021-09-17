@@ -7,9 +7,39 @@ Created on Tue Apr 28 15:22:05 2020
 """
 import numpy as np
 from numba import njit
+from os.path import dirname
 
-def sphericalrand(size):
-    
+PATH = dirname(__file__)
+
+def load_northpole():
+    '''
+    Load example data for finding the historical position of the north pole
+
+    Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
+    Statistics and Computing volume 28, 689–697 (2018)
+
+    Returns
+    ----------
+    data : ndarray (33, 3)
+    '''
+
+    data = np.loadtxt(open(PATH + '/tasmanianData.csv', 'rb'), delimiter=",")
+
+    return data.T
+
+def sphericalrand(size=1):
+    '''
+    Generate uniform random samples on a sphere
+
+    Arguments
+    ----------
+    size : int, optional, default 1
+        Number of samples
+
+    Returns
+    ----------
+    samples : ndarray (size, 3)
+    '''
     ones = np.ones((size, ))
     u = 2 * np.random.rand(size) - ones
     phi = 2 * np.pi * np.random.rand(size)
@@ -17,7 +47,7 @@ def sphericalrand(size):
     theta = np.sqrt(ones - np.square(u))
     samples = np.zeros((size, 3))
     samples[:, 0] = theta * np.cos(phi)
-    samples[:, 1] = theta = np.sin(phi)
+    samples[:, 1] = theta * np.sin(phi)
     samples[:, 2] = u
 
     return samples

@@ -7,37 +7,98 @@ Created on Thu Apr 23 20:58:05 2020
 """
 import numpy as np
 
-def sphere(n_grid, func = None):
+def sphere(n_grid = 30, equalize_areas = True):
+    '''
+    Create vectors to conveniently plot a sphere
+
+    Arguments
+    ----------
+    n_grid  : int, optional, default 30
+        Number of grid points for the sphere for both
+        longitude and lattitude
+    equalize_areas : bool, optional, default True
+        If True, enforces that surface patches are of same area
+
+    Returns
+    ----------
+    x : ndarray 
+    y : ndarray 
+    z : ndarray 
+    '''
+
+    if equalize_areas == True:
+        u = np.arccos(np.linspace(-1, 1, n_grid))
+
+    else:    
+        u = np.linspace(0, np.pi, n_grid)
     
-    u = np.linspace(0, np.pi, n_grid)
-    
+
     v = np.linspace(0, 2 * np.pi, n_grid)
 
     x = np.outer(np.sin(u), np.sin(v))
     y = np.outer(np.sin(u), np.cos(v))
     z = np.outer(np.cos(u), np.ones_like(v))
-        
-    if func is not None:
-        
-        u_grid, v_grid = np.meshgrid(u, v)
-    
-        vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), \
-                            np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
-    
-        vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid).T
-        
-        #calculate function values for the sphere faces
-        
-        f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
+   
+    return x, y, z
 
-        return x, y, z, f_faces
+def evaluate_on_sphere(func, n_grid = 30, equalize_areas = True):
+    '''
+    Evaluate a function over a sphere
+
+    Arguments
+    ----------
+    func : callable
+        Must be of the form ndarray (n, 3)-> (n, )
+    n_grid  : int, optional, default 30
+        Number of grid points for the sphere for both
+        longitude and lattitude
+    equalize_areas : bool, optional, default True
+        If True, enforces that surface patches are of same area
+
+    Returns
+    ----------
+    f : ndarray (n, )
+    '''    
+    if equalize_areas == True:
+        u = np.arccos(np.linspace(-1, 1, n_grid))
+
+    else:    
+        u = np.linspace(0, np.pi, n_grid)
+    v = np.linspace(0, 2 * np.pi, n_grid)
     
-    else:
-        
-        return x, y, z
+    u_grid, v_grid = np.meshgrid(u, v)
+
+    vertex_vecs = np.array([np.sin(v_grid)*np.sin(u_grid), \
+                        np.cos(v_grid)*np.sin(u_grid),np.cos(u_grid)])
+
+    vertex_vecs = vertex_vecs.reshape(3,n_grid*n_grid).T
+
+    #calculate function values for the sphere faces
+
+    f_faces = func(vertex_vecs).reshape(n_grid,n_grid).T
     
+    return f_faces
+
 def spherical_hist(vectors, n_grid = 100):
-    
+    '''
+    Basic spherical histogram
+
+    Arguments
+    ----------
+    vectors : ndarray (n, 3)
+        Vectors to calculate histogram of
+    n_grid  : int, optional, default 100
+        number of grid points for the sphere for both
+        longitude and lattitude
+
+    Returns
+    ----------
+    hist : ndarray
+    x : ndarray 
+    y : ndarray 
+    z : ndarray 
+    '''
+        
     #u = np.linspace(0, np.pi , n_grid, endpoint = True)
     u = np.flip(np.arccos(np.linspace(-1,1,n_grid, endpoint = True)))
     v = np.linspace(-np.pi, np.pi, n_grid, endpoint = True)

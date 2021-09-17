@@ -25,11 +25,6 @@ def _pdf(vectors, cov):
     
 @njit(cache = True)
 def fit(vectors, tol):
-    '''
-    Finds MLE of ACG distribution using the fix point algorithm
-    Source: Tyler, Statistical  analysis  for  the  angular  central Gaussian  distribution  on  the  sphere
-    Biometrika  (1987), 74,  3, pp.  579-89
-    '''
 
     l = np.eye(3)
 
@@ -72,7 +67,15 @@ def fit(vectors, tol):
 
 class ACG(object):
     '''
-    Angular Central Gaussian distribution object
+    Angular Central Gaussian distribution
+
+    Args:
+        cov_matrix (optional, ndarray (3, 3) ): Covariance matrix of the ACG distribution
+
+    Notes
+    -------
+    Reference: Tyler, Statistical  analysis  for  the  angular  central Gaussian  distribution  on  the  sphere
+    Biometrika  (1987), 74,  3, pp.  579-89
     '''
     
     def __init__(self, cov_matrix = None):
@@ -88,26 +91,72 @@ class ACG(object):
                 raise TypeError("Covariance matrix must be positive definite!")
             
     def fit(self, vectors, tol = 1e-4):
+        '''
+        Fits the Angular Central Gaussian Distribution to data
+
+        Arguments
+        ----------
+        vectors : ndarray (n, 3)
+            Vector data the distribution is fitted to
+        tol : float, optional, default 1e-4
+            Convergence tolerance of the fix point algorithm. Tolerance is measured as the difference between the Frobenius 
+            norms of the estimated covariance matrix between two iterations.
+        '''
         
         self.cov_matrix = fit(vectors, tol)
         
-    def rvs(self, size):
-        
-        zero = np.array([0,0,0])
+    def rvs(self, size = 1):
+        '''
+        Generate samples from the Angular central gaussian distribution
 
-        unnormalized_samples = np.random.multivariate_normal(zero, self.cov_matrix, size)
+        Arguments
+        ----------
+        size : int, optional, default 1
+            Number of samples
 
-        norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
+        Returns
+        ----------
+        samples : ndarray (size, 3)
+            samples as ndarray of shape (size, 3)
+        '''
 
-        samples = unnormalized_samples/norms
+        if self.cov_matrix != None:
 
-        return samples
+            zero = np.array([0,0,0])
+
+            unnormalized_samples = np.random.multivariate_normal(zero, self.cov_matrix, size)
+
+            norms = np.linalg.norm(unnormalized_samples, axis=1)[:,np.newaxis]
+
+            samples = unnormalized_samples/norms
+
+            return samples
+
+        else:
+
+            raise ValueError("ACG distribution not parameterized. Fit it to data or set covariance matrix manually.")
     
     def pdf(self, x):
-        
-        if x.size == 3:
-            x = x.reshape(1, -1)
-        
-        pdfvals = _pdf(x, self.cov_matrix)
-        
-        return pdfvals
+        '''
+        Calculate probability density function of a set of vectors ``x`` given a parameterized 
+        Angular Central Gaussian distribution
+
+        Arguments
+        ----------
+        x : ndarray (size, 3)
+            Vectors to evaluate the PDF at
+
+        Returns
+        ----------
+        pdfvals : ndarray (size,)
+            PDF values as ndarray of shape (size,)
+        '''
+        if self.cov_matrix is not None:  
+            if x.size == 3:
+                x = x.reshape(1, -1)
+            
+            pdfvals = _pdf(x, self.cov_matrix)
+            
+            return pdfvals
+        else:
+            raise ValueError("ACG distribution not parameterized. Fit it to data or set covariance matrix manually")

@@ -22,15 +22,16 @@ def resultant_length(vectors):
 
 def spherical_mean(vectors):
     '''
-    Calculate spherical mean
+    Calculates the spherical mean of a set of vectors
 
     Parameters
     ----------
-    vectors : ndarray [n,3]
+    vectors : ndarray (n, 3)
+        Input vectors to calculate spherical mean of
 
     Returns
     -------
-    mean : ndarray [n,3]
+    mean : ndarray (n,3)
     '''
     r = resultant_length(vectors)
         
@@ -41,11 +42,12 @@ def spherical_mean(vectors):
 
 def spherical_variance(vectors):
     '''
-    Calculate spherical variance
+    Calculates the spherical variance of a set of vectors
 
     Parameters
     ----------
-    vectors : ndarray [n,3]
+    vectors : ndarray (n, 3)
+        Input vectors to calculate spherical variance of
 
     Returns
     -------
@@ -59,30 +61,20 @@ def spherical_variance(vectors):
 
     return var
 
-def orientation_matrix(vectors, eigen = True):
+def orientation_matrix(vectors):
     '''
-    Calculates the orientation matrix and its Eigen decomposition
-    of a set of vectors
+    Calculates the orientation matrix of a set of vectors
 
     Parameters
     ----------
-    vectors : ndarray [n,3]
+    vectors : ndarray (n ,3)
         sample of n vectors
-    eigen : bool, optional
-        indicate that Eigen decomposition shall be performed. 
-        The default is True.
 
     Returns
     -------
-    orientation_matrix
-    ndarray [3,3,]
-    
-    or
-    
-    eigenvals: ndarray[3]
-    eigenvecs: ndarray[3,3]
-
+    orientation_matrix : ndarray (3, 3)
     '''
+
     x_vals = vectors[:, 0]
     y_vals = vectors[:, 1]
     z_vals = vectors[:, 2]
@@ -101,17 +93,5 @@ def orientation_matrix(vectors, eigen = True):
     orientation_matrix[1, 2] = yzsum
     orientation_matrix[2, 1] = yzsum
     orientation_matrix[2, 2] = np.sum(z_vals * z_vals)
-    
-    if eigen == True:
         
-        eigenvals, eigenvecs = np.linalg.eigh(orientation_matrix)
-        
-        n_samples = vectors.shape[0]
-        
-        eigenvals = eigenvals/n_samples
-        
-        return eigenvals, eigenvecs
-    
-    else:
-        
-        return orientation_matrix    
+    return orientation_matrix    
