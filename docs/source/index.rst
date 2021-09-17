@@ -13,12 +13,11 @@ Installation
 
    pip install spherical_stats
 
-Contents
-===========================================
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
 
+   NorthPole_Example
    spherical_stats
 
 Indices and tables
