@@ -3,7 +3,7 @@ from distutils.core import setup
  
 setup(
     name='spherical_stats',   
-    version='0.2', 
+    version='1.0', 
     description='Spherical statistics in Python',
     author='Daniel Schmitz',
     author_email='danielschmitzsiegen@gmail.com',
@@ -15,5 +15,7 @@ setup(
         'numpy',
         'numba>0.44',
         'scipy>0.11'
-    ]             
+    ],
+    include_package_data=True,
+    package_data={'': ['tasmanianData.csv']}           
 )
