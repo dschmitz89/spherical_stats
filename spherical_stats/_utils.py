@@ -89,3 +89,42 @@ def random_spd_matrix(normalize = True):
         B = 3 * B/trace
     
     return B
+
+#@njit(cache = True)
+def rotation_matrix(a, b):
+    """ The rotation matrix that takes a onto b.
+
+    Parameters
+    ----------
+    a, b : numpy.array
+        Three dimensional vectors defining the rotation matrix
+
+    Returns
+    -------
+    M : numpy.array
+        Three by three rotation matrix
+
+    Notes
+    -----
+    Source:
+    https://spherical-kde.readthedocs.io/en/latest/_modules/spherical_kde/utils.html
+
+    StackExchange post:
+        https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d
+    """
+    v = np.cross(a, b)
+    s = v.dot(v)**0.5
+    if s == 0:
+        return np.eye(3)
+    c = np.dot(a, b)
+    Id = np.eye(3)
+    #v1 = v[0]
+    #v2 = v[1]
+    #v3 = v[2]
+    v1, v2, v3 = v
+    vx = np.array([[0, -v3, v2],
+                      [v3, 0, -v1],
+                      [-v2, v1, 0]])
+    vx2 = np.matmul(vx, vx)
+    R = Id + vx + vx2 * (1-c)/s**2
+    return R
