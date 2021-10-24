@@ -67,14 +67,38 @@ def _fit(data):
     return mu, kappa
 
 class VMF:
+    '''
+    Van Mises-Fisher distribution
 
+    Args:
+        mu (optional, ndarray (3, ) ): Mean orientation
+        kappa (optional, float): positive concentration parameter
+
+    Notes
+    -------
+    References:\n
+    Mardia, Jupp. Directional Statistics, 1999. \n
+    Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
+    '''
     def __init__(self, mu = None, kappa = None):
         
         self.mu = mu
         self.kappa = kappa
 
     def rvs(self, size = 1):
+        '''
+        Generate samples from the VMF distribution
 
+        Arguments
+        ----------
+        size : int, optional, default 1
+            Number of samples
+
+        Returns
+        ----------
+        samples : ndarray (size, 3)
+            samples as ndarray of shape (size, 3)
+        ''' 
         if self.mu is not None and self.kappa is not None:
             
             z = np.array([0., 0., 1.])
@@ -89,7 +113,20 @@ class VMF:
             raise ValueError("VMF distribution not parameterized. Fit it to data or set parameters manually.")
 
     def pdf(self, x):
+        '''
+        Calculate probability density function of a set of vectors ``x`` given a parameterized 
+        VMF distribution
 
+        Arguments
+        ----------
+        x : ndarray (size, 3)
+            Vectors to evaluate the PDF at
+
+        Returns
+        ----------
+        pdfvals : ndarray (size,)
+            PDF values as ndarray of shape (size,)
+        '''
         if self.mu is not None and self.kappa is not None:
 
             pdf = _pdf(self.mu, self.kappa, x)
@@ -101,53 +138,12 @@ class VMF:
             raise ValueError("VMF distribution not parameterized. Fit it to data or set parameters manually.")
 
     def fit(self, data):
+        '''
+        Fits the VMF distribution to data
 
+        Arguments
+        ----------
+        data : ndarray (n, 3)
+            Vector data the distribution is fitted to
+        '''
         self.mu, self.kappa = _fit(data)    
-
-'''
-theta = np.deg2rad(30)
-phi = 0
-
-MU = polar_to_vectors(theta, phi)
-KAPPA = 15
-
-vmf_1 = VMF(MU, 15)
-
-vmfsamples = vmf_1.rvs(500)
-
-vmf_2 = VMF()
-vmf_2.fit(vmfsamples)
-
-print(mf_2.mu)
-
-
-fit_mu, fit_kappa = _fit(vmfsamples)
-print(fit_mu)
-print(fit_kappa)
-
-import spherical_stats
-import matplotlib.pyplot as plt
-
-x, y, z = spherical_stats.sphere(n_grid = 30)
-
-plt.rcParams['figure.figsize'] = [8, 8]
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-ax.plot_surface(
-    x, y, z,  rstride=1, cstride=1, color='c', alpha=0.9, linewidth=1)
-
-ax.scatter(vmfsamples[:, 0], vmfsamples[:, 1], vmfsamples[:, 2], color="r",s=20)
-#ax.view_init(57, 145)
-plt.show()
-
-data=sphericalrand(500)
-
-MU = np.array([1., 0., 0.])
-KAPPA = 100
-
-pdfvals = _pdf(MU, KAPPA, data)
-
-print(pdfvals)
-#pdfvals = _pdf(MU, KAPPA, data)
-'''
