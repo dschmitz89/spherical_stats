@@ -68,14 +68,19 @@ def _fit(data):
 
 class VMF:
     '''
-    Van Mises-Fisher distribution
+    Von Mises-Fisher distribution
 
     Args:
         mu (optional, ndarray (3, ) ): Mean orientation
         kappa (optional, float): positive concentration parameter
 
-    Notes
-    -------
+    The VMF distribution is an isotropic symmetrical distribution for 
+    directional data. Its PDF is defined as 
+
+    .. math::
+
+        p_{vMF}(\mathbf{x}|\mathbf{mu}, \kappa)=\frac{\kappa}{4\pi\sinh\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
+        
     References:\n
     Mardia, Jupp. Directional Statistics, 1999. \n
     Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
