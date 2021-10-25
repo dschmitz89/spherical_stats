@@ -67,11 +67,11 @@ def _fit(data):
     return mu, kappa
 
 class VMF:
-    '''
+    """
     Von Mises-Fisher distribution
 
     Args:
-        mu (optional, ndarray (3, ) ): Mean orientation
+        mu (optional, ndarray (3, ) ): Mean orientation \n
         kappa (optional, float): positive concentration parameter
 
     The VMF distribution is an isotropic symmetrical distribution for 
@@ -79,12 +79,12 @@ class VMF:
 
     .. math::
 
-        p_{vMF}(\mathbf{x}|\mathbf{mu}, \kappa)=\frac{\kappa}{4\pi\sinh\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
-        
+        p_{vMF}(\mathbf{x}|\mathbf{\mu}, \kappa)=\frac{\kappa}{4\pi\text{sinh}\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
+
     References:\n
     Mardia, Jupp. Directional Statistics, 1999. \n
     Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
-    '''
+    """
     def __init__(self, mu = None, kappa = None):
         
         self.mu = mu
