@@ -66,11 +66,20 @@ def fit(vectors, tol):
     return l
 
 class ACG(object):
-    '''
+    r'''
     Angular Central Gaussian distribution
 
     Args:
         cov_matrix (optional, ndarray (3, 3) ): Covariance matrix of the ACG distribution
+
+    The angular central gaussian distribution is an elliptically symmetrical distribution
+    for axial data. Its PDF is defined as 
+
+    .. math::
+
+        p_{ACG}(\mathbf{x}|\mathbf{\Lambda}) = \frac{1}{4\pi\sqrt{|\Lambda|}}(\mathbf{x}\Lambda^{-1}\mathbf{x})^{-\frac{3}{2}}
+
+    with covariance matrix :math:`\Lambda` and its determinant :math:`|\Lambda|` .
 
     Notes
     -------

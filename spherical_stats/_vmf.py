@@ -74,13 +74,19 @@ class VMF:
         mu (optional, ndarray (3, ) ): Mean orientation \n
         kappa (optional, float): positive concentration parameter
 
-    The VMF distribution is an isotropic symmetrical distribution for 
-    directional data. Its PDF is defined as 
+    The VMF distribution is an isotropic distribution for 
+    directional data. Its PDF is typically defined as 
 
     .. math::
 
-        p_{vMF}(\mathbf{x}|\mathbf{\mu}, \kappa) = \frac{\kappa}{4\pi\text{sinh}\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
+        p_{vMF}(\mathbf{x}|\mathbf{{\mu}}, \kappa) = \frac{\kappa}{4\pi\text{sinh}\kappa}\exp(\kappa\mathbf{{\mu}}^T\mathbf{x})
 
+    Here, the numerically stable variant from (Wenzel, 2012) is used:
+
+    .. math::
+
+        p_{vMF}(\mathbf{x}|\mathbf{{\mu}}, \kappa) = \frac{\kappa}{2\pi(1-\exp(-2\kappa)}\exp(\kappa(\mathbf{{\mu}}^T\mathbf{x}-1)
+    
     References:\n
     Mardia, Jupp. Directional Statistics, 1999. \n
     Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
