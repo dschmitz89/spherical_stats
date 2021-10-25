@@ -79,13 +79,13 @@ class VMF:
 
     .. math::
 
-        p_{vMF}(\mathbf{x}| \mathbf{\mu}, \kappa) = \frac{\kappa}{4\pi\cdot\text{sinh}\kappa}\exp(\kappa \mathbf{\mu}^T\mathbf{x})
+        p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{4\pi\cdot\text{sinh}(\kappa)}\exp(\kappa \boldsymbol{\mu}^T\mathbf{x})
 
     Here, the numerically stable variant from (Wenzel, 2012) is used:
 
     .. math::
 
-        p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{2\pi(1-\exp(-2\kappa))}\exp(\kappa( \mathbf{\mu}^T \mathbf{x}-1)
+        p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{2\pi(1-\exp(-2\kappa))}\exp(\kappa( \boldsymbol{\mu}^T \mathbf{x}-1))
     
     References:\n
     Mardia, Jupp. Directional Statistics, 1999. \n
