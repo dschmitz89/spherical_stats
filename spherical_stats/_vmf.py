@@ -71,7 +71,7 @@ class VMF:
     Von Mises-Fisher distribution
 
     Args:
-        mu (optional, ndarray (3, ) ): Mean orientation \n
+        mu (optional, ndarray (3, ) ): Mean orientation 
         kappa (optional, float): positive concentration parameter
 
     The VMF distribution is an isotropic distribution for 
@@ -87,8 +87,8 @@ class VMF:
 
         p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{2\pi(1-\exp(-2\kappa))}\exp(\kappa( \boldsymbol{\mu}^T \mathbf{x}-1))
     
-    References:\n
-    Mardia, Jupp. Directional Statistics, 1999. \n
+    References:
+    Mardia, Jupp. Directional Statistics, 1999. 
     Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
     """
     def __init__(self, mu = None, kappa = None):
