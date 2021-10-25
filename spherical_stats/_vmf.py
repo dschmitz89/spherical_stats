@@ -67,7 +67,7 @@ def _fit(data):
     return mu, kappa
 
 class VMF:
-    """
+    r"""
     Von Mises-Fisher distribution
 
     Args:
@@ -79,7 +79,7 @@ class VMF:
 
     .. math::
 
-        p_{vMF}(\mathbf{x}|\mathbf{\mu}, \kappa)=\frac{\kappa}{4\pi\text{sinh}\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
+        p_{vMF}(\mathbf{x}|\mathbf{\mu}, \kappa) = \frac{\kappa}{4\pi\text{sinh}\kappa}\exp(\kappa\mathbf{\mu}^T\mathbf{x})
 
     References:\n
     Mardia, Jupp. Directional Statistics, 1999. \n
