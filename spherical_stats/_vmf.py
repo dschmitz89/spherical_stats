@@ -179,7 +179,9 @@ class VMF:
 
         Reference
         ----------
-        Fayat, 2021. `Conversion of the von Mises-Fisher concentration parameter to an equivalent angle. <https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf>`_ 
+        Fayat, 2021. Conversion of the von Mises-Fisher concentration parameter to an equivalent angle.
+
+        https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf
         
         """
         if self.kappa is not None:

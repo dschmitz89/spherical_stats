@@ -228,9 +228,9 @@ class ESAG(object):
     Args:
         params (optional, ndarray (5, ) ): Parameters of the distribution
         
-    ``params`` are the following: :math:`(\mu_0, \mu_1, \mu_2, \gamma_1, \gamma_2)`.
+    ``params`` are the following: :math:`\mu_0, \mu_1, \mu_2, \gamma_1, \gamma_2)`.
 
-    The principal orientation vectors is given by the normalized vector :math:`\boldsymbol{\mu}=(\mu_0, \mu_1, \mu_2)/||(\mu_0, \mu_1, \mu_2)||` 
+    The principal orientation vectors is given by the normalized vector :math:`\boldsymbol{\mu}=[\mu_0, \mu_1, \mu_2]^T/||[\mu_0, \mu_1, \mu_2]^T||` 
     and the shape of the distribution is controlled by the parameters :math:`\gamma_1` and :math:`\gamma_2`.
 
     Notes
