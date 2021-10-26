@@ -234,10 +234,14 @@ class ESAG(object):
 
     Notes
     -------
+    The formula of the ESAG PDF is quite complicated, developers are referred to the reference below. \n
+
+    Note that unlike the original Matlab implementation the distribution is fitted using the L-BFGS-B algorithm
+    based on a finite difference approximation of the gradient. So far, this has proven to work succesfully.\n
+
     Reference: Paine et al. An elliptically symmetric angular Gaussian distribution, 
-    Statistics and Computing volume 28, 689–697 (2018)\n
-    Unlike the original Matlab implementation the distribution is fitted using the L-BFGS-B algorithm
-    based on a finite difference approximation of the gradient. So far, this has proven to work succesfully.
+    Statistics and Computing volume 28, 689–697 (2018)
+
     '''
     
     def __init__(self, params = None):
