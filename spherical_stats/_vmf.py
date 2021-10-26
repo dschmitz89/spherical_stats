@@ -165,6 +165,10 @@ class VMF:
         r"""
         Calculates the angle which contains probability mass alpha of the VMF density around the mean angle
 
+        Reference: Fayat, 2021. Conversion of the von Mises-Fisher concentration parameter to an equivalent angle.
+
+        https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf
+
         Arguments
         ----------
         alpha : float
@@ -176,12 +180,6 @@ class VMF:
         ----------
         angle : float
             Resulting angle
-
-        Reference
-        ----------
-        Fayat, 2021. Conversion of the von Mises-Fisher concentration parameter to an equivalent angle.
-
-        https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf
         
         """
         if self.kappa is not None:
