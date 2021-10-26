@@ -159,4 +159,37 @@ class VMF:
         data : ndarray (n, 3)
             Vector data the distribution is fitted to
         '''
-        self.mu, self.kappa = _fit(data)    
+        self.mu, self.kappa = _fit(data)
+
+    def angle_within_probability_mass(self, alpha, deg = False):
+        r'''
+        Calculates the angle which contains probability mass alpha of the VMF density around the mean angle
+
+        Arguments
+        ----------
+        alpha : float
+            Probability mass. Must be :math:`0<\alpha<1` 
+
+        Returns
+        ----------
+        pdfvals : ndarray (size,)
+            PDF values as ndarray of shape (size,)
+
+        Reference:
+
+        Fayat, 2021. `Conversion of the von Mises-Fisher concentration parameter to an equivalent angle. <https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf>`_ 
+        '''
+        if self.kappa is not None:
+
+            nominator = np.log(1-alpha + alpha * np.exp(-2 * self.kappa))  
+
+            angle = np.arccos(1+nominator/self.kappa)
+
+            if deg == True:
+                angle=np.rad2deg(angle)
+
+            return angle
+
+        else:
+
+            raise ValueError("Concentration parameter kappa unknown.")
