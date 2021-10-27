@@ -19,7 +19,7 @@ Refer to the [online documentation](https://spherical-stats.readthedocs.io/en/la
     * Orientation tensor
 * Parametric distributions with scipy.stats like API:
     * Modeling axial data: Angular central gaussian distribution (ACG)
-    * Modeling vector data: Elliptically symmetrical angular gausian distribution (ESAG)
+    * Modeling vector data: Elliptically symmetrical angular gausian distribution (ESAG), Von Mises-Fisher distribution (VMF)
 
 Example usage of the distributions:
 

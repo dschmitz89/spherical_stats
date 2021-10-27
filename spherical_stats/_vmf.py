@@ -67,19 +67,32 @@ def _fit(data):
     return mu, kappa
 
 class VMF:
-    '''
-    Van Mises-Fisher distribution
+    r"""
+    Von Mises-Fisher distribution
 
     Args:
-        mu (optional, ndarray (3, ) ): Mean orientation
+        mu (optional, ndarray (3, ) ): Mean orientation 
         kappa (optional, float): positive concentration parameter
 
-    Notes
-    -------
-    References:\n
-    Mardia, Jupp. Directional Statistics, 1999. \n
-    Numerically stable sampling of the von Mises Fisher distribution on  S2. Wenzel, 2012
-    '''
+    The VMF distribution is an isotropic distribution for 
+    directional data. Its PDF is typically defined as 
+
+    .. math::
+
+        p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{4\pi\cdot\text{sinh}(\kappa)}\exp(\kappa \boldsymbol{\mu}^T\mathbf{x})
+
+    Here, the numerically stable variant from (Wenzel, 2012) is used:
+
+    .. math::
+
+        p_{vMF}(\mathbf{x}| \boldsymbol{\mu}, \kappa) = \frac{\kappa}{2\pi(1-\exp(-2\kappa))}\exp(\kappa( \boldsymbol{\mu}^T \mathbf{x}-1))
+    
+    References:
+
+    Mardia, Jupp. Directional Statistics, 1999. 
+
+    Wenzel. Numerically stable sampling of the von Mises Fisher distribution on  S2. 2012
+    """
     def __init__(self, mu = None, kappa = None):
         
         self.mu = mu
@@ -146,4 +159,40 @@ class VMF:
         data : ndarray (n, 3)
             Vector data the distribution is fitted to
         '''
-        self.mu, self.kappa = _fit(data)    
+        self.mu, self.kappa = _fit(data)
+
+    def angle_within_probability_mass(self, alpha, deg = False):
+        r"""
+        Calculates the angle which contains probability mass alpha of the VMF density around the mean angle
+
+        Reference: Fayat, 2021. Conversion of the von Mises-Fisher concentration parameter to an equivalent angle.
+
+        https://github.com/rfayat/SphereProba/blob/main/ressources/vmf_integration.pdf
+
+        Arguments
+        ----------
+        alpha : float
+            Probability mass. Must be :math:`0<\alpha<1` 
+        deg : optional, default False
+            If True, converts the result into degrees
+
+        Returns
+        ----------
+        angle : float
+            Resulting angle
+        
+        """
+        if self.kappa is not None:
+
+            nominator = np.log(1-alpha + alpha * np.exp(-2 * self.kappa))  
+
+            angle = np.arccos(1+nominator/self.kappa)
+
+            if deg == True:
+                angle=np.rad2deg(angle)
+
+            return angle
+
+        else:
+
+            raise ValueError("Concentration parameter kappa unknown.")
