@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
  
 setup(
     name='spherical_stats',   
-    version='1.1', 
+    version='1.2', 
     description='Spherical statistics in Python',
     author='Daniel Schmitz',
     author_email='danielschmitzsiegen@gmail.com',
