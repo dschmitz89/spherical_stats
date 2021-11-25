@@ -5,7 +5,7 @@
 
 Welcome to spherical_stats's documentation!
 ===========================================
-Basic functionalities for spherical statistics.
+Spherical statistics in Python with a focus on accuracy and speed. Unlike many other implementations of spherical distributions, all probability distributions in spherical_stats are fitted exactly using numerical optimization and root-finding techniques and do not rely on approximations. Computationally intensive parts are accelerated using numba.
 
 Installation
 ===========================================
