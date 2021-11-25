@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.special import hyp1f1
+from scipy.special import erfi
 from ._utils import rotation_matrix
 from ._descriptive_stats import orientation_matrix
 from numba import njit
@@ -22,9 +22,12 @@ class Watson:
 
     .. math::
 
-        p_{Watson}(\pm\mathbf{x}| \boldsymbol{\mu}, \kappa) = M\left(\frac{1}{2},\frac{3}{2},\kappa\right)\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2)
+        p_{Watson}(\pm\mathbf{x}| \boldsymbol{\mu}, \kappa) &= M\left(\frac{1}{2},\frac{3}{2},\kappa\right)\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2) \\
+            
+                                                            & = \frac{\sqrt{\pi}\mathrm{erfi}(\sqrt{x})}{2\sqrt{x}}\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2)
 
-    where :math:`M` denotes `Kummer's confluent hypergeometric function <https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.hyp1f1.html#scipy.special.hyp1f1>`_ .
+    where :math:`M` denotes `Kummer's confluent hypergeometric function <https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.hyp1f1.html#scipy.special.hyp1f1>`_ 
+    and :math:`\mathrm{erfi}` the `imaginary error function <https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.erfi.html>`_ .
 
     References:
 
@@ -53,8 +56,8 @@ class Watson:
         ''' 
         if self.mu is not None and self.kappa is not None:
             
-            constant = 0.5 * 1/hyp1f1(0.5, 1.5, self.kappa)
-
+            sqrt_kappa = np.sqrt(self.kappa)
+            constant = np.sqrt(np.pi)*erfi(sqrt_kappa)/(2*sqrt_kappa)
             z = np.array([0., 0., 1.])
             rot_matrix = rotation_matrix(z, self.mu)
 
@@ -84,7 +87,8 @@ class Watson:
         '''
         if self.mu is not None and self.kappa is not None:
             
-            constant = 1/hyp1f1(0.5, 1.5, self.kappa)
+            sqrt_kappa = np.sqrt(self.kappa)
+            constant = np.sqrt(np.pi)*erfi(sqrt_kappa)/(2*sqrt_kappa)
             pdf = _pdf_wo_constant(self.mu, self.kappa, x)
 
             pdf = pdf * constant
@@ -113,7 +117,12 @@ class Watson:
 
         def obj(kappa):
 
-            f = hyp1f1(1.5, 2.5, kappa)/(3*hyp1f1(0.5, 1.5, kappa)) - intermed_res
+            sqrt_kappa = np.sqrt(kappa)
+            nominator = (2*np.exp(kappa)*sqrt_kappa - np.sqrt(np.pi) * erfi(sqrt_kappa))/(4*kappa**1.5)
+            denominator = np.sqrt(np.pi)*erfi(sqrt_kappa)/(2*sqrt_kappa)
+
+            f = nominator/denominator - intermed_res
+
             return f
 
         kappa_fit, root_res = brentq(obj, 1e-4, 500., full_output=True)
