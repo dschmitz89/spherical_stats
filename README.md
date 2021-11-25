@@ -1,5 +1,5 @@
 # spherical_stats
-Spherical statistics in Python
+Spherical statistics in Python with a focus on accuracy and speed. Unlike many other implementations of spherical distributions, all probability distributions in spherical_stats are fitted exactly using numerical optimization and root-finding techniques and do not rely on approximations. Computationally intensive parts are accelerated using [numba](https://github.com/numba/numba).
 
 ## Installation
 ```bash
@@ -18,8 +18,8 @@ Refer to the [online documentation](https://spherical-stats.readthedocs.io/en/la
     * Spherical mean and spherical variance
     * Orientation tensor
 * Parametric distributions with scipy.stats like API:
-    * Modeling axial data: Angular central gaussian distribution (ACG)
-    * Modeling vector data: Elliptically symmetrical angular gausian distribution (ESAG), Von Mises-Fisher distribution (VMF)
+    * Modeling axial data: Watson distribution, Angular central gaussian distribution (ACG)
+    * Modeling vector data: Von Mises-Fisher distribution (VMF), Elliptically symmetrical angular gausian distribution (ESAG), 
 
 Example usage of the distributions:
 
