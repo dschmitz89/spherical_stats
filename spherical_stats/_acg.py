@@ -77,9 +77,9 @@ class ACG(object):
 
     .. math::
 
-        p_{ACG}(\mathbf{x}|\mathbf{\Lambda}) = \frac{1}{4\pi\sqrt{|\Lambda|}}(\mathbf{x}\Lambda^{-1}\mathbf{x})^{-\frac{3}{2}}
+        p_{ACG}(\pm\mathbf{x}|\mathbf{\Lambda}) = \frac{1}{4\pi\sqrt{|\Lambda|}}(\mathbf{x}\Lambda^{-1}\mathbf{x})^{-\frac{3}{2}}
 
-    with covariance matrix :math:`\Lambda` and its determinant :math:`|\Lambda|` .
+    with covariance matrix :math:`\Lambda` and its determinant :math:`|\Lambda|` . :math:`\Lambda` must be positive definite.
 
     Notes
     -------

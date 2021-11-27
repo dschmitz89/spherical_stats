@@ -23,7 +23,7 @@ class Watson:
     .. math::
 
         p_{Watson}(\pm\mathbf{x}| \boldsymbol{\mu}, \kappa) & = M\left(\frac{1}{2},\frac{3}{2},\kappa\right)\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2) \\            
-                                                            & = \frac{\sqrt{\pi}\mathrm{erfi}(\sqrt{x})}{2\sqrt{x}}\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2)
+                                                            & = \frac{\sqrt{\pi}\mathrm{erfi}(\sqrt{\kappa})}{2\sqrt{\kappa}}\exp(\kappa (\boldsymbol{\mu}^T\mathbf{x})^2)
 
     where :math:`M` denotes `Kummer's confluent hypergeometric function <https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.hyp1f1.html#scipy.special.hyp1f1>`_ 
     and :math:`\mathrm{erfi}` the `imaginary error function <https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.erfi.html>`_ .
